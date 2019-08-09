@@ -69,10 +69,10 @@ defmodule LoanRanger.Loan do
              is_binary(payment_amount) and is_integer(term) do
 
     loan = %__MODULE__{
-      loan_amount: loan_amount,
+      loan_amount: Money.parse!(loan_amount),
       annual_interest_rate: annual_interest_rate,
       payment_type: payment_type,
-      payment_amount: payment_amount,
+      payment_amount: Money.parse!(payment_amount),
       opening_date: opening_date,
       term: term,
       first_payment_date: first_payment_date
