@@ -70,7 +70,7 @@ defmodule LoanRanger.Loan do
 
     loan = %__MODULE__{
       loan_amount: Money.parse!(loan_amount),
-      annual_interest_rate: annual_interest_rate,
+      annual_interest_rate: Decimal.new(annual_interest_rate),
       payment_type: payment_type,
       payment_amount: Money.parse!(payment_amount),
       opening_date: opening_date,
