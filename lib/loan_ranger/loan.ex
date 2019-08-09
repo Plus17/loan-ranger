@@ -1,6 +1,6 @@
 defmodule LoanRanger.Loan do
   @moduledoc """
-  Logic for Loan
+  Logic for Loans
   """
 
   @enforce_keys [
@@ -41,7 +41,7 @@ defmodule LoanRanger.Loan do
   {:ok,
     %LoanRanger.Loan{
      loan_amount: %Money{amount: 8500000, currency: :USD},
-     annual_interest_rate: Decimal.new("60.0"),
+     annual_interest_rate: #Decimal<60.0>,
      payment_type: :monthly,
      payment_amount: %Money{amount: 759500, currency: :USD},
      opening_date: ~D[2018-12-28],
