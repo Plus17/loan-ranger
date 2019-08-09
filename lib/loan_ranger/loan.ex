@@ -58,22 +58,20 @@ defmodule LoanRanger.Loan do
   ```
   """
   @spec create(map) :: Loant.t()
-  def create(
-        %{
-          loan_amount: loan_amount,
-          annual_interest_rate: annual_interest_rate,
-          payment_type: payment_type,
-          payment_amount: payment_amount,
-          opening_date: opening_date,
-          term: term,
-          first_payment_date: first_payment_date,
-          payday: payday
-        }
-      )
+  def create(%{
+        loan_amount: loan_amount,
+        annual_interest_rate: annual_interest_rate,
+        payment_type: payment_type,
+        payment_amount: payment_amount,
+        opening_date: opening_date,
+        term: term,
+        first_payment_date: first_payment_date,
+        payday: payday
+      })
       when is_binary(loan_amount) and is_binary(annual_interest_rate) and is_atom(payment_type) and
-      is_binary(payment_amount) and is_binary(opening_date) and is_integer(term) and is_binary(first_payment_date) and
-      is_integer(payday) do
-
+             is_binary(payment_amount) and is_binary(opening_date) and is_integer(term) and
+             is_binary(first_payment_date) and
+             is_integer(payday) do
     loan = %__MODULE__{
       loan_amount: Money.parse!(loan_amount),
       annual_interest_rate: Decimal.new(annual_interest_rate),
@@ -87,5 +85,4 @@ defmodule LoanRanger.Loan do
 
     {:ok, loan}
   end
-
 end
