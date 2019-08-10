@@ -21,7 +21,7 @@ defmodule LoanRanger.AmortizationTableTest do
     {:ok, %{loan: loan}}
   end
 
-  test "generate_payment_dates/1 generate expected list of dates", %{loan: loan} do
+  test "generate_payment_dates/1 returns expected list of dates", %{loan: loan} do
     expected_list_dates =
       [
         ~D[2019-01-15],
@@ -44,6 +44,9 @@ defmodule LoanRanger.AmortizationTableTest do
         ~D[2020-06-15]
       ]
 
-    assert AmortizationTable.generate_payment_dates(loan) == expected_list_dates
+    generated_list_dates = AmortizationTable.generate_payment_dates(loan)
+
+    assert generated_list_dates == expected_list_dates
+    assert Enum.count(generated_list_dates) == loan.term
   end
 end
