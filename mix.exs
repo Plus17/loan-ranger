@@ -24,7 +24,8 @@ defmodule LoanRanger.MixProject do
       {:credo, "~> 1.0.0", only: [:dev, :test], runtime: false},
       {:ex_doc, "~> 0.14", only: [:dev, :docs]},
       {:money, "~> 1.4"},
-      {:decimal, "~> 1.0"}
+      {:decimal, "~> 1.0"},
+      {:timex, "~> 3.5"}
     ]
   end
 end
