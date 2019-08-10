@@ -31,4 +31,3 @@ use Mix.Config
 
 config :money,
   default_currency: :USD
-  
