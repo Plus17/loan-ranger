@@ -4,7 +4,7 @@ defmodule LoanRanger.AmortizationTableTest do
   alias LoanRanger.Loan
   alias LoanRanger.AmortizationTable
 
-  test "generate_payment_dates/1 generate expected list of dates" do
+  setup do
     params = %{
       loan_amount: "85000",
       annual_interest_rate: "60.0",
@@ -18,6 +18,10 @@ defmodule LoanRanger.AmortizationTableTest do
 
     {:ok, loan} = Loan.create(params)
 
+    {:ok, %{loan: loan}}
+  end
+
+  test "generate_payment_dates/1 generate expected list of dates", %{loan: loan} do
     expected_list_dates =
       [
         ~D[2019-01-15],
