@@ -6,9 +6,9 @@ defmodule LoanRanger.AmortizationTable do
   alias LoanRanger.Loan
 
   @doc """
-  Generate monthly payment dates for a credit
+  Generate monthly payment dates for a loan
   """
-  @spec generate_payment_dates(Loan.t) :: list
+  @spec generate_payment_dates(Loan.t) :: [Date.t]
   def generate_payment_dates(%Loan{term: term, first_payment_date: first_payment_date}) do
     payment_dates_list =
       Enum.reduce(2..term, [first_payment_date], fn(_month, acc) ->
@@ -19,5 +19,4 @@ defmodule LoanRanger.AmortizationTable do
 
     Enum.reverse(payment_dates_list)
   end
-
 end
