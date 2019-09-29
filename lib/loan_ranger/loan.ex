@@ -8,14 +8,14 @@ defmodule LoanRanger.Loan do
     :annual_interest_rate,
     :payment_amount,
     :opening_date,
-    :term,
+    :term
   ]
   defstruct [
     :loan_amount,
     :annual_interest_rate,
     :payment_amount,
     :opening_date,
-    :term,
+    :term
   ]
 
   @default_opts [currency: :USD]
@@ -56,19 +56,21 @@ defmodule LoanRanger.Loan do
   ```
   """
   @spec create(map) :: Loant.t()
-  def create(%{
-    loan_amount: loan_amount,
-    annual_interest_rate: annual_interest_rate,
-    payment_amount: payment_amount,
-    opening_date: opening_date,
-    term: term
-  }, opts \\ @default_opts)
-      when is_integer(loan_amount)
-           and is_binary(annual_interest_rate)
-           and is_integer(payment_amount)
-           and is_binary(opening_date)
-           and is_integer(term) do
-
+  def create(
+        %{
+          loan_amount: loan_amount,
+          annual_interest_rate: annual_interest_rate,
+          payment_amount: payment_amount,
+          opening_date: opening_date,
+          term: term
+        },
+        opts \\ @default_opts
+      )
+      when is_integer(loan_amount) and
+             is_binary(annual_interest_rate) and
+             is_integer(payment_amount) and
+             is_binary(opening_date) and
+             is_integer(term) do
     currency = Keyword.get(opts, :currency)
 
     loan = %__MODULE__{

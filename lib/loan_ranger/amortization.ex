@@ -10,5 +10,4 @@ defmodule LoanRanger.Amortization do
     :principal,
     :balance
   ]
-
 end
