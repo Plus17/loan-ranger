@@ -1,4 +1,4 @@
-defmodule LoanRanger.AmortizationTableTest do
+defmodule LoanRanger.AmortizationScheduleTest do
   use ExUnit.Case
 
   alias LoanRanger.Loan
@@ -6,10 +6,9 @@ defmodule LoanRanger.AmortizationTableTest do
 
   setup do
     params = %{
-      loan_amount: "85000",
+      loan_amount: 8_500_000,
       annual_interest_rate: "60.0",
-      payment_type: :monthly,
-      payment_amount: "7595",
+      payment_amount: 759_500,
       opening_date: "2018-12-28",
       term: 18
     }

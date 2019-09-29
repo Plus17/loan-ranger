@@ -5,6 +5,14 @@ defmodule LoanRanger.AmortizationTable do
 
   alias LoanRanger.Loan
 
+  defstruct [
+    :loan_amount,
+    :annual_interest_rate,
+    :payment_amount,
+    :opening_date,
+    :term,
+  ]
+
   @doc """
   Generate monthly payment dates for a loan
   """
