@@ -4,7 +4,7 @@ defmodule LoanRanger.AmortizationSchedule do
   """
 
   alias LoanRanger.Loan
-  alias LoanRanger.Amortization
+  alias LoanRanger.Amortizationm
 
   defstruct [
     :amortizations
