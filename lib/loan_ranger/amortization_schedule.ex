@@ -4,14 +4,37 @@ defmodule LoanRanger.AmortizationSchedule do
   """
 
   alias LoanRanger.Loan
-  alias LoanRanger.Amortizationm
+  alias LoanRanger.Amortization
 
   defstruct [
     :amortizations
   ]
 
   @doc """
-  Get amortization schedule
+  Get amortization schedule.
+  This module needs Loan.t struct for work
+
+  ## Example
+  ```
+
+  iex > LoanRanger.AmortizationSchedule.get(%Loan{})
+  {:ok,
+    %LoanRanger.AmortizationSchedule{
+      amortizatons: [
+        %LoanRanger.Amortization{
+          date: ~D[2019-01-28],
+          payment_amount: %Money{amount: 727_143, currency: :USD,
+          principal: %Money{amount: 302_143, currency: :USD,
+          interest: %Money{amount: 425_000, currency: :USD,
+          balance: %Money{amount: 8_197_857, currency: :USD
+        },
+        ...
+      ]
+    }
+  }
+
+
+  ```
   """
   @spec get(Loan.t()) :: AmortizationSchedule.t()
   def get(
@@ -54,14 +77,11 @@ defmodule LoanRanger.AmortizationSchedule do
         annual_interest_rate,
         acc
       ) do
+
+    interest_to_apply = _get_interest_to_apply(annual_interest_rate, payment_date, previous_payment_date)
+
     amortization =
-      calculate_amortization(
-        payment_date,
-        previous_payment_date,
-        payment_amount,
-        previous_balance,
-        annual_interest_rate
-      )
+      calculate_amortization(payment_date, payment_amount, previous_balance, interest_to_apply)
 
     amortizations = [amortization | acc]
 
@@ -88,22 +108,14 @@ defmodule LoanRanger.AmortizationSchedule do
   @doc """
   Calculates an amortization
   """
-  @spec calculate_amortization(Date.t(), Date.t(), Money.t(), Money.t(), Decimal.t()) ::
-          Amortization.t()
+  @spec calculate_amortization(Date.t(), Money.t(), Money.t(), float) :: Amortization.t()
   def calculate_amortization(
         payment_date,
-        previous_payment_date,
         payment_amount,
         previous_balance,
-        annual_interest_rate
+        interest_to_apply
       ) do
-    daily_interest_rate = _calculates_daily_interest_rate(annual_interest_rate)
-    days_for_interest = _calculates_days_for_interest(payment_date, previous_payment_date)
-    interest_to_apply = _calculates_interest_to_apply(daily_interest_rate, days_for_interest)
-
-    float_interest_to_apply = Decimal.to_float(interest_to_apply)
-
-    interest_amount = _calculates_interest_amount(float_interest_to_apply, previous_balance)
+    interest_amount = _calculates_interest_amount(interest_to_apply, previous_balance)
     principal = Money.subtract(payment_amount, interest_amount)
 
     %Amortization{
@@ -130,6 +142,16 @@ defmodule LoanRanger.AmortizationSchedule do
       end)
 
     Enum.reverse(payment_dates_list)
+  end
+
+  # Gets interest to apply
+  @spec _get_interest_to_apply(Decimal.t, Date.t, Date.t) :: float
+  defp _get_interest_to_apply(annual_interest_rate, payment_date, previous_payment_date) do
+    daily_interest_rate = _calculates_daily_interest_rate(annual_interest_rate)
+    days_for_interest = _calculates_days_for_interest(payment_date, previous_payment_date)
+    interest_to_apply = _calculates_interest_to_apply(daily_interest_rate, days_for_interest)
+
+    Decimal.to_float(interest_to_apply)
   end
 
   # Calculate interest amount
