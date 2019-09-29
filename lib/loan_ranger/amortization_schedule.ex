@@ -20,7 +20,7 @@ defmodule LoanRanger.AmortizationSchedule do
   iex > LoanRanger.AmortizationSchedule.get(%Loan{})
   {:ok,
     %LoanRanger.AmortizationSchedule{
-      amortizatons: [
+      amortizations: [
         %LoanRanger.Amortization{
           date: ~D[2019-01-28],
           payment_amount: %Money{amount: 727_143, currency: :USD,
@@ -155,7 +155,7 @@ defmodule LoanRanger.AmortizationSchedule do
   end
 
   # Calculate interest amount
-  @spec _calculates_interest_amount(Decimal.t(), Money.t()) :: Money.t()
+  @spec _calculates_interest_amount(float, Money.t()) :: Money.t()
   defp _calculates_interest_amount(interest_to_apply, previous_balance) do
     Money.multiply(previous_balance, interest_to_apply)
   end
