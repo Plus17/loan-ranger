@@ -49,7 +49,7 @@ defmodule LoanRanger.AmortizationScheduleTest do
   end
 
   test "get/1 returns the right amortization schedule", %{loan: loan} do
-    expected_table = [
+    expected_amortizations = [
       %Amortization{date: ~D[2019-01-28], payment_amount: Money.new(727_143), principal: Money.new(302_143), interest: Money.new(4250_00), balance: Money.new(8_197_857)},
       %Amortization{date: ~D[2019-02-28], payment_amount: Money.new(727_143), principal: Money.new(317_250), interest: Money.new(4098_93), balance: Money.new(7_880_607)},
       %Amortization{date: ~D[2019-03-28], payment_amount: Money.new(727_143), principal: Money.new(333_113), interest: Money.new(3940_30), balance: Money.new(7_547_494)},
@@ -70,9 +70,11 @@ defmodule LoanRanger.AmortizationScheduleTest do
       %Amortization{date: ~D[2020-06-28], payment_amount: Money.new(727_143), principal: Money.new(692_517), interest: Money.new(34_626), balance: Money.new(-5)}
     ]
 
-    amortization_schedule = AmortizationSchedule.get(loan)
+    {:ok, amortization_schedule} = AmortizationSchedule.get(loan)
 
-    assert Enum.count(amortization_schedule) == loan.term
-    assert amortization_schedule == expected_table
+    amortizations = Map.get(amortization_schedule, :amortizations)
+
+    assert Enum.count(amortizations) == loan.term
+    assert amortizations == expected_amortizations
   end
 end
