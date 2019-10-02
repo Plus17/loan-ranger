@@ -10,6 +10,10 @@ defmodule LoanRanger.AmortizationSchedule do
     :amortizations
   ]
 
+  @type t() :: %__MODULE__{
+          amortizations: list()
+        }
+
   @doc """
   Get amortization schedule.
   This module needs Loan.t struct for work
@@ -77,11 +81,9 @@ defmodule LoanRanger.AmortizationSchedule do
         annual_interest_rate,
         acc
       ) do
-
     interest_to_apply = _get_interest_to_apply(annual_interest_rate, payment_date, previous_payment_date)
 
-    amortization =
-      calculate_amortization(payment_date, payment_amount, previous_balance, interest_to_apply)
+    amortization = calculate_amortization(payment_date, payment_amount, previous_balance, interest_to_apply)
 
     amortizations = [amortization | acc]
 
@@ -145,7 +147,7 @@ defmodule LoanRanger.AmortizationSchedule do
   end
 
   # Gets interest to apply
-  @spec _get_interest_to_apply(Decimal.t, Date.t, Date.t) :: float
+  @spec _get_interest_to_apply(Decimal.t(), Date.t(), Date.t()) :: float
   defp _get_interest_to_apply(annual_interest_rate, payment_date, previous_payment_date) do
     daily_interest_rate = _calculates_daily_interest_rate(annual_interest_rate)
     days_for_interest = _calculates_days_for_interest(payment_date, previous_payment_date)
