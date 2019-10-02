@@ -10,4 +10,12 @@ defmodule LoanRanger.Amortization do
     :principal,
     :balance
   ]
+
+  @type t() :: %__MODULE__{
+          date: Date.t(),
+          payment_amount: Money.t(),
+          interest: Money.t(),
+          principal: Money.t(),
+          balance: Money.t()
+        }
 end
