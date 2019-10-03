@@ -42,7 +42,7 @@ defmodule LoanTest do
       %{amount: 759_500, date: "2019-03-28"}
     ]
 
-    assert {:ok, loan} = Loan.create(params)
+    {:ok, loan} = Loan.create(params)
 
     {:ok, loan} = Loan.load_payments(loan, payments)
 
@@ -51,5 +51,19 @@ defmodule LoanTest do
              %Payment{amount: %Money{amount: 759_500, currency: :USD}, date: ~D[2019-02-28]},
              %Payment{amount: %Money{amount: 759_500, currency: :USD}, date: ~D[2019-03-28]}
            ]
+  end
+
+  test "get_currency/1" do
+    params = %{
+      loan_amount: 8_500_000,
+      annual_interest_rate: "60.0",
+      payment_amount: 759_500,
+      opening_date: "2018-12-28",
+      term: 18
+    }
+
+    {:ok, loan} = Loan.create(params)
+
+    assert Loan.get_currency(loan) == :USD
   end
 end
