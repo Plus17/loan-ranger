@@ -3,6 +3,8 @@ defmodule LoanRanger.AmortizationTest do
 
   use ExUnit.Case
 
+  import Money.Sigils
+
   alias LoanRanger.Amortization
   alias LoanRanger.Payment
 
@@ -13,14 +15,14 @@ defmodule LoanRanger.AmortizationTest do
     }
 
     {:ok, amortization} =
-      Amortization.break_down_payment(payment, %Money{amount: 8_500_000, currency: :USD}, 0.05)
+      Amortization.break_down_payment(payment, ~M[8_500_000]USD, 0.05)
 
     assert amortization == %Amortization{
              date: ~D[2019-01-28],
-             payment_amount: Money.new(727_143),
-             principal: Money.new(302_143),
-             interest: Money.new(425_000),
-             balance: Money.new(8_197_857)
+             payment_amount: ~M[727_143],
+             principal: ~M[302_143],
+             interest: ~M[425_000],
+             balance: ~M[8_197_857]
            }
   end
 end

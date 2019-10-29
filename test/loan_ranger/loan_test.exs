@@ -3,6 +3,8 @@ defmodule LoanTest do
 
   use ExUnit.Case
 
+  import Money.Sigils
+
   alias LoanRanger.Loan
   alias LoanRanger.Payment
 
@@ -18,9 +20,9 @@ defmodule LoanTest do
     assert Loan.create(params) ==
              {:ok,
               %Loan{
-                loan_amount: %Money{amount: 8_500_000, currency: :USD},
+                loan_amount: ~M[8_500_000]USD,
                 annual_interest_rate: Decimal.new("60.0"),
-                payment_amount: %Money{amount: 759_500, currency: :USD},
+                payment_amount: ~M[759_500]USD,
                 opening_date: Date.from_iso8601!("2018-12-28"),
                 term: 18,
                 payments: []
@@ -47,9 +49,9 @@ defmodule LoanTest do
     {:ok, loan} = Loan.load_payments(loan, payments)
 
     assert loan.payments == [
-             %Payment{amount: %Money{amount: 759_500, currency: :USD}, date: ~D[2019-01-28]},
-             %Payment{amount: %Money{amount: 759_500, currency: :USD}, date: ~D[2019-02-28]},
-             %Payment{amount: %Money{amount: 759_500, currency: :USD}, date: ~D[2019-03-28]}
+             %Payment{amount: ~M[759_500]USD, date: ~D[2019-01-28]},
+             %Payment{amount: ~M[759_500]USD, date: ~D[2019-02-28]},
+             %Payment{amount: ~M[759_500]USD, date: ~D[2019-03-28]}
            ]
   end
 
