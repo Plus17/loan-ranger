@@ -14,8 +14,7 @@ defmodule LoanRanger.AmortizationTest do
       amount: Money.new(727_143)
     }
 
-    {:ok, amortization} =
-      Amortization.break_down_payment(payment, ~M[8_500_000]USD, 0.05)
+    {:ok, amortization} = Amortization.break_down_payment(payment, ~M[8_500_000]USD, 0.05)
 
     assert amortization == %Amortization{
              date: ~D[2019-01-28],

@@ -33,24 +33,24 @@ defmodule LoanRanger.AmortizationTableTest do
     expected_amortizations = [
       %Amortization{
         date: ~D[2019-01-28],
-        payment_amount:  ~M[727_143],
-        principal:  ~M[302_143],
-        interest:  ~M[425_000],
-        balance:  ~M[8_197_857]
+        payment_amount: ~M[727_143],
+        principal: ~M[302_143],
+        interest: ~M[425_000],
+        balance: ~M[8_197_857]
       },
       %Amortization{
         date: ~D[2019-02-28],
-        payment_amount:  ~M[727_143],
-        principal:  ~M[317_250],
-        interest:  ~M[409_893],
-        balance:  ~M[7_880_607]
+        payment_amount: ~M[727_143],
+        principal: ~M[317_250],
+        interest: ~M[409_893],
+        balance: ~M[7_880_607]
       },
       %Amortization{
         date: ~D[2019-03-28],
-        payment_amount:  ~M[727_143],
-        principal:  ~M[333_113],
-        interest:  ~M[394_030],
-        balance:  ~M[7_547_494]
+        payment_amount: ~M[727_143],
+        principal: ~M[333_113],
+        interest: ~M[394_030],
+        balance: ~M[7_547_494]
       }
     ]
 
