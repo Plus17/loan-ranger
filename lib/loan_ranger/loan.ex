@@ -128,7 +128,7 @@ defmodule LoanRanger.Loan do
   """
   @spec load_payments(t(), [map]) :: t()
   def load_payments(%__MODULE__{} = loan, payments) when is_list(payments) do
-    currency = _get_currency(loan)
+    currency = get_currency(loan)
 
     payments =
       payments
@@ -170,6 +170,6 @@ defmodule LoanRanger.Loan do
   end
 
   # Get loan currency
-  @spec _get_currency(t()) :: atom
-  defp _get_currency(%__MODULE__{loan_amount: amount}), do: Map.get(amount, :currency)
+  @spec get_currency(t()) :: atom
+  def get_currency(%__MODULE__{loan_amount: amount}), do: Map.get(amount, :currency)
 end
