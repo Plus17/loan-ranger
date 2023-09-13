@@ -20,6 +20,7 @@ defmodule LoanTest do
     assert Loan.create(params) ==
              {:ok,
               %Loan{
+                currency: :USD,
                 loan_amount: ~M[8_500_000]USD,
                 annual_interest_rate: Decimal.new("60.0"),
                 payment_amount: ~M[759_500]USD,

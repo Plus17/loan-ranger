@@ -4,6 +4,7 @@ defmodule LoanRanger.Loan do
   """
 
   @enforce_keys [
+    :currency,
     :loan_amount,
     :annual_interest_rate,
     :payment_amount,
@@ -11,6 +12,7 @@ defmodule LoanRanger.Loan do
     :term
   ]
   defstruct [
+    :currency,
     :loan_amount,
     :annual_interest_rate,
     :payment_amount,
@@ -21,7 +23,13 @@ defmodule LoanRanger.Loan do
 
   @default_opts [currency: :USD]
 
+  @typedoc """
+  :USD | :MXN, etc.
+  """
+  @type currency() :: atom()
+
   @type t() :: %__MODULE__{
+          currency: currency(),
           loan_amount: Money.t(),
           annual_interest_rate: Decimal.t(),
           payment_amount: Money.t(),
@@ -56,6 +64,7 @@ defmodule LoanRanger.Loan do
   iex > LoanRanger.Loan.create(params, opts)
   {:ok,
     %LoanRanger.Loan{
+      currency: :USD,
       loan_amount: %Money{amount: 8500000, currency: :USD},
       annual_interest_rate: #Decimal<60.0>,
       payment_amount: %Money{amount: 759500, currency: :USD},
@@ -65,7 +74,7 @@ defmodule LoanRanger.Loan do
   }
   ```
   """
-  @spec create(map) :: t()
+  @spec create(map, Keyword.t()) :: {:ok, t()}
   def create(
         %{
           loan_amount: loan_amount,
@@ -81,9 +90,10 @@ defmodule LoanRanger.Loan do
              is_integer(payment_amount) and
              is_binary(opening_date) and
              is_integer(term) do
-    currency = Keyword.get(opts, :currency)
+    currency = Keyword.fetch!(opts, :currency)
 
     loan = %__MODULE__{
+      currency: currency,
       loan_amount: Money.new(loan_amount, currency),
       annual_interest_rate: Decimal.new(annual_interest_rate),
       payment_amount: Money.new(payment_amount, currency),
@@ -171,5 +181,5 @@ defmodule LoanRanger.Loan do
 
   # Get loan currency
   @spec get_currency(t()) :: atom
-  def get_currency(%__MODULE__{loan_amount: amount}), do: Map.get(amount, :currency)
+  def get_currency(%__MODULE__{currency: currency}), do: currency
 end
