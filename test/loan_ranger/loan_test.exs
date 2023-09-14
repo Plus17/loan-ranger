@@ -30,43 +30,31 @@ defmodule LoanTest do
               }}
   end
 
-  test "load_payments/2" do
-    params = %{
-      loan_amount: 8_500_000,
-      annual_interest_rate: "60.0",
-      payment_amount: 759_500,
-      opening_date: "2018-12-28",
-      term: 18
-    }
+  describe "load_payments/2" do
+    test "when payments are valid" do
+      params = %{
+        loan_amount: 8_500_000,
+        annual_interest_rate: "60.0",
+        payment_amount: 759_500,
+        opening_date: "2018-12-28",
+        term: 18
+      }
 
-    payments = [
-      %{amount: 759_500, date: "2019-01-28"},
-      %{amount: 759_500, date: "2019-02-28"},
-      %{amount: 759_500, date: "2019-03-28"}
-    ]
+      payments = [
+        %{amount: 759_500, date: "2019-01-28"},
+        %{amount: 759_500, date: "2019-02-28"},
+        %{amount: 759_500, date: "2019-03-28"}
+      ]
 
-    {:ok, loan} = Loan.create(params)
+      {:ok, loan} = Loan.create(params)
 
-    {:ok, loan} = Loan.load_payments(loan, payments)
+      {:ok, loan} = Loan.load_payments(loan, payments)
 
-    assert loan.payments == [
-             %Payment{amount: ~M[759_500]USD, date: ~D[2019-01-28]},
-             %Payment{amount: ~M[759_500]USD, date: ~D[2019-02-28]},
-             %Payment{amount: ~M[759_500]USD, date: ~D[2019-03-28]}
-           ]
-  end
-
-  test "get_currency/1" do
-    params = %{
-      loan_amount: 8_500_000,
-      annual_interest_rate: "60.0",
-      payment_amount: 759_500,
-      opening_date: "2018-12-28",
-      term: 18
-    }
-
-    {:ok, loan} = Loan.create(params)
-
-    assert Loan.get_currency(loan) == :USD
+      assert loan.payments == [
+               %Payment{amount: ~M[759_500]USD, date: ~D[2019-01-28]},
+               %Payment{amount: ~M[759_500]USD, date: ~D[2019-02-28]},
+               %Payment{amount: ~M[759_500]USD, date: ~D[2019-03-28]}
+             ]
+    end
   end
 end

@@ -136,50 +136,21 @@ defmodule LoanRanger.Loan do
   }
   ```
   """
-  @spec load_payments(t(), [map]) :: t()
-  def load_payments(%__MODULE__{} = loan, payments) when is_list(payments) do
-    currency = get_currency(loan)
-
-    payments =
-      payments
-      |> _load_payments(currency, [])
-      |> Enum.reverse()
+  @spec load_payments(t(), [map]) :: {:ok, t()}
+  def load_payments(%__MODULE__{currency: currency} = loan, payments) when is_list(payments) do
+    payments = Enum.map(payments, &build_payment(&1, currency))
 
     loan_with_payments = Map.put(loan, :payments, payments)
 
     {:ok, loan_with_payments}
   end
 
-  # load payments
-  @spec _load_payments([map], atom, list) :: [Payment.t()]
-  defp _load_payments([payment_params | tail], currency, acc) do
-    with {:ok, payment_params} <- _validate_payment_params(payment_params),
-         {:ok, %Payment{} = payment} <- _build_payment(payment_params, currency) do
-      _load_payments(tail, currency, [payment | acc])
-    end
-  end
-
-  defp _load_payments([], _currency, payments), do: payments
-
-  # Validate payment params
-  @spec _validate_payment_params(map) :: {:ok, Payment.t()} | {:error, atom}
-  defp _validate_payment_params(%{amount: amount, date: date} = payment)
-       when is_integer(amount) and is_binary(date),
-       do: {:ok, payment}
-
-  defp _validate_payment_params(_payment_params), do: {:error, :bad_params}
-
   # Build payment strucr
-  @spec _build_payment(map, atom) :: {:ok, Payment.t()}
-  defp _build_payment(%{amount: amount, date: date}, currency) do
-    {:ok,
-     %Payment{
-       amount: Money.new(amount, currency),
-       date: Date.from_iso8601!(date)
-     }}
+  @spec build_payment(%{amount: integer, date: binary}, currency()) :: Payment.t()
+  defp build_payment(%{amount: amount, date: date}, currency) do
+    %Payment{
+      amount: Money.new(amount, currency),
+      date: Date.from_iso8601!(date)
+    }
   end
-
-  # Get loan currency
-  @spec get_currency(t()) :: atom
-  def get_currency(%__MODULE__{currency: currency}), do: currency
 end
